@@ -13,6 +13,15 @@ async function createUrl(req, res) {
       return res.status(400).send("Please enter valid url");
     }
 
+    const urlExists = await UrlSchema.findOne({ fullUrl: fullUrl });
+
+    if (urlExists) {
+      return res.status(201).json({
+        msg: "Url created",
+        shortUrl: process.env.DOMAIN + urlExists.shortUrl,
+      });
+    }
+
     const shortUrl = nano.nanoid(7);
     const obj = {
       fullUrl,
