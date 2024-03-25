@@ -1,13 +1,14 @@
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const UrlSchema = new mongoose.Schema({
-  fullurl: {
+const UrlSchema = new Schema({
+  fullUrl: {
     type: String,
     required: true,
   },
   shortUrl: {
     type: String,
     required: true,
+    unique: true,
   },
   clicks: {
     type: Number,
@@ -16,4 +17,4 @@ const UrlSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.Model("url-data", UrlSchema);
+module.exports = model("url-link", UrlSchema);

@@ -1,26 +1,15 @@
 const express = require("express");
+const { createUrl, getfullUrl } = require("./controller/urlController");
+const connectDB = require("./config/db");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+connectDB();
 app.use(express.json());
 
-app.post("/shorten-url", (req, res) => {
-  try {
-    const { fullurl } = req.body;
-    if (!fullurl) {
-      return res.status(400).send("Please enter url");
-    }
-    console.log(fullurl);
-    res.status(201).send("Url created");
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Internal server error");
-  }
-});
+app.post("/shorten-url", createUrl);
 
-app.get("/kr/:shortId", (req, res) => {
-  res.status(200).send(`get url request ${req.params.shortId}`);
-});
+app.get("/kr/:shortId", getfullUrl);
 
 app.use("*", (req, res) => {
   res.json({ msg: "Invalid Path" });
