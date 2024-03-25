@@ -3,14 +3,16 @@ const UrlSchema = require("../models/url.model");
 require("dotenv").config();
 async function createUrl(req, res) {
   let regex =
-    /^(?:(?:https?|ftp):\/\/)?(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}|(?:\d{1,3}\.){3}\d{1,3})(?::\d+)?(?:\/\S*)?$/i;
+    /^(?:http|https?):\/\/(?:(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}|(?:\d{1,3}\.){3}\d{1,3})(?::\d+)?(?:\/\S*)?$/i;
   try {
     const { fullUrl } = req.body;
     if (!fullUrl) {
       return res.status(400).send("Please enter url");
     }
     if (!regex.test(fullUrl)) {
-      return res.status(400).send("Please enter valid url");
+      return res
+        .status(400)
+        .send("Please enter valid url ex: https://www.example.com");
     }
 
     const urlExists = await UrlSchema.findOne({ fullUrl: fullUrl });
